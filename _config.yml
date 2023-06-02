@@ -55,6 +55,7 @@ plainwhite:
 
 # Build settings
 # theme: plainwhite
+published: true
 future: true
 plugins:
   - jekyll-seo-tag
