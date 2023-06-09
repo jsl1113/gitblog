@@ -5,7 +5,7 @@ date:   2023-06-08 18:03:36 +0530
 categories: java spring
 ---
 
-## Spring CRUD
+### Spring CRUD
 Create(생성), Read(읽기), Update(갱신), Delete(삭제)
 
 
@@ -24,7 +24,7 @@ Create(생성), Read(읽기), Update(갱신), Delete(삭제)
     → 원치 않는 문제를 야기할 수 있음
 
 
-## Student 목록 출력하기
+### Student 목록 출력하기
 model / StudentDto.java
 ```java
 package com.example.crud.model;
