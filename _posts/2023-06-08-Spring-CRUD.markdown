@@ -25,7 +25,7 @@ Create(생성), Read(읽기), Update(갱신), Delete(삭제)
 
 
 ## Student 목록 출력하기
-StudentDto.java
+model / StudentDto.java
 ```java
 package com.example.crud.model;
 
@@ -78,4 +78,117 @@ public class StudentDto {
 }
 ```
 
+templates / create.html
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Student</title>
+</head>
+<body>
+<h1>Create Student</h1>
+<form th:action="@{/create}" method="post">
+<!--  사용자가 제공할 데이터에 알맞은 input과 label을 만든다.-->
+  <label for="name-input">Name: <input id="name-input" name="name"></label><br>
+  <label for="email-input">Email: <input id="email-input" name="email"></label><br>
+<!--  데이터 제출 버튼-->
+  <input type="submit"/>
+</form>
+<a href="/home">Back</a>
+</body>
+</html>
+```
+
+templates / home.html
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student List</title>
+</head>
+<body>
+    <h1>Student List</h1>
+    <!--등록된 학생이 없을 떄 -->
+    <div th:if="${studentList.isEmpty()}">
+        <p> No Student Here ... </p>
+    </div>
+    <div th:unless="${studentList.isEmpty()}" th:each="student: ${studentList}">
+        <p>번호 : [[${student.id}]]</p>
+        <p>이름 : [[${student.name}]]</p>
+        <p>이메일 : [[${student.email}]]</p>
+    </div><hr>
+<a th:href="@{/create-view}">Create</a>
+</body>
+</html>
+```
+
+StudentService.java
+```java
+import com.example.crud.model.StudentDto;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class StudentService {
+    // 복수의 StudentDto를 담는 변수
+    List<StudentDto> studentDtoList = new ArrayList<>();
+    private Long nextId = 1L;
+
+    // 새로운 Student를 생성하는 메소드
+    public StudentDto createStudent(String name, String email){
+        StudentDto studentDto = new StudentDto(nextId++, name, email);
+        studentDtoList.add(studentDto);
+        return studentDto;
+    }
+
+    public List<StudentDto> readStudentAll(){
+        return studentDtoList;
+    }
+}
+```
+
+StudentController.java
+```java
+import com.example.crud.model.StudentDto;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class StudentController {
+    // StudentService를 Controller 에서
+    private StudentService studentService;
+
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
+    @GetMapping("/create-view")
+    public String createView(){
+        return "create";
+    }
+
+    @PostMapping("/create")
+    public String create(@RequestParam("name") String name, @RequestParam("email") String email){
+        StudentDto studentDto = studentService.createStudent(name, email);
+        System.out.println(studentDto.toString());
+        return "redirect:/home";
+    }
+
+    @GetMapping("/home")
+    public String home(Model model) {
+        model.addAttribute("studentList", studentService.readStudentAll());
+        return "home";
+    }
+}
+```
+
+### 결과 화면
+![image](https://github.com/jsl1113/gitblog/assets/55522275/ecdabc85-0dfa-446e-875c-ee1ac39b808a)
 
