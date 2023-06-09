@@ -5,7 +5,6 @@ date:   2023-06-08 18:03:36 +0530
 categories: java spring
 ---
 
-### Spring CRUD
 Create(생성), Read(읽기), Update(갱신), Delete(삭제)
 
 
