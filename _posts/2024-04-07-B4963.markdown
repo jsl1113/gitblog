@@ -76,4 +76,4 @@ public class B4963_섬의개수 {
 }
 ```
 
-![img.png](img.png)
+![img.png](https://github.com/jsl1113/gitblog/blob/main/assets/img.png)
